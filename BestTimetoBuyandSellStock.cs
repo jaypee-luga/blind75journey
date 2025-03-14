@@ -1,22 +1,23 @@
 public class Solution {
     public int MaxProfit(int[] prices) {
-        var lowest = prices.Min();
-        var lowestIndex = Array.IndexOf(prices,lowest);      
-
-        if(lowestIndex == prices.Length -1)  
-            return 0;
-
-        var largest = 0;
-        var largestIndex = 0;
-
-        for(int i = lowestIndex; i < prices.Length; i++)
+        Dictionary<int, int> maxProfitMatrix = new Dictionary<int, int>();
+        for (int y = 0; y < prices.Length; y++)
         {
-            if(prices[i] > largest){
-                largest = prices[i];
-                largestIndex = i;
+            if(maxProfitMatrix.ContainsKey(prices[y]))
+                continue;
+
+            maxProfitMatrix.Add(prices[y], 0);
+
+            for (int x = y; x < prices.Length; x++)
+            {
+                if (prices[x] - prices[y] > maxProfitMatrix[prices[y]])
+                {
+                    maxProfitMatrix[prices[y]] = prices[x] - prices[y];
+                }
             }
+
         }
 
-        return (prices[largestIndex] - prices[lowestIndex]);
+        return maxProfitMatrix.Values.Max();
     }    
 }
